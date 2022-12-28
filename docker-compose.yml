@@ -1,0 +1,28 @@
+version: "3.7"
+
+services:
+  database:
+    image: mysql:8.0
+    platform: linux/amd64
+    command:
+      - "--default-authentication-plugin=mysql_native_password"
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=codetest
+      - MYSQL_USER=codetest
+      - MYSQL_PASSWORD=swordfish
+    ports:
+      - "3306:3306"
+    restart: always
+    volumes:
+      - ./sql_scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - /tmp/slack_bot/mysqld:/var/run/mysqld
+  data-processing:
+    image: data-processing
+    build: images/data_processing
+    command: [ "./csv_processing.py" ]
+    depends_on:
+      - database
+    volumes:
+      - ./data:/data
+      - /tmp/slack_bot/mysqld:/var/run/mysqld
