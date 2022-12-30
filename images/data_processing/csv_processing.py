@@ -95,10 +95,7 @@ def load_peoples_info(engine):
 
 
 def people_per_country_json(engine):
-    try:
-        with engine.connect() as connection:
-            # consider using ORM to join tables
-            sql_statement = """
+    sql = """
             select country, count(1) num_of_people 
             from places_info pi1
             left join peoples_info pi2
@@ -106,9 +103,10 @@ def people_per_country_json(engine):
             group by country
             order by num_of_people desc
             """
-
+    try:
+        with engine.connect() as connection:
             with open("/data/sample_output.json", "w") as json_file:
-                rows = connection.execute(sql_statement).fetchall()
+                rows = connection.execute(sql).fetchall()
                 data_dict = {}
                 for row in rows:
                     data_dict[row[0]] = row[1]
