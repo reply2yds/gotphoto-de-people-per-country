@@ -9,6 +9,7 @@ from sqlalchemy import create_engine, schema
 
 def db_connect():
     # connect to the database
+    # TODO: parameterize the credentials
     engine = create_engine(
         "mysql://codetest:swordfish@database/codetest",
         pool_recycle=3600,
@@ -68,6 +69,7 @@ def load_peoples(engine):
 
 
 def load_places_info(engine):
+    # TODO: insert else update
     sql = """
     insert into places_info (city, county, country)
     select city, county, country from places
@@ -80,6 +82,7 @@ def load_places_info(engine):
 
 
 def load_peoples_info(engine):
+    # TODO: insert else update
     sql = """
     insert into peoples_info (given_name, family_name, date_of_birth, birth_place_id)
     select given_name, family_name, date_of_birth, pi.id

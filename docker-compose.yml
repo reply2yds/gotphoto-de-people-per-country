@@ -16,7 +16,6 @@ services:
     restart: always
     volumes:
       - ./sql_scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - /tmp/slack_bot/mysqld:/var/run/mysqld
   data-processing:
     image: data-processing
     build: images/data_processing
@@ -25,4 +24,3 @@ services:
       - database
     volumes:
       - ./data:/data
-      - /tmp/slack_bot/mysqld:/var/run/mysqld
